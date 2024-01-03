@@ -1,0 +1,23 @@
+.text-stroke {
+  color: #ffa943;
+  text-shadow: 0px 2px 0px #000;
+  font-family: Comic Sans MS;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 60px; /* 120% */
+  letter-spacing: 0.5px;
+  -webkit-text-fill-color: #ffa943;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+}
+
+.title {
+  -webkit-text-fill-color: #ffa943;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+}
+
+.tokenAirdrop {
+  background-image: url('../assets/image/bg-airdrop.png');
+  background-size: cover;
+}
