@@ -1,28 +1,38 @@
 import { Button, Container } from "../../components";
 import "./style.css";
+import btnAirDropM from "../../assets/image/btnAirDropMobile.png";
+import btnBuyNowM from "../../assets/image/btnBuyNowMobile.png";
+import { useNavigate } from "react-router-dom";
+import { PATH_AIR_DROPS } from "../../routes/paths";
 
-function MenuMobile() {
+interface MenuMobileProps {
+  onClick: () => void;
+  onClickRoadmap: () => void;
+}
+
+function MenuMobile({ onClick, onClickRoadmap }: MenuMobileProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="menuMobile">
       <Container className="px-5 md:px-0">
         <ul className="py-6">
-          <li className="pb-6">TOKENOMIC</li>
-          <li className="py-6 border-y border-[#A3A3A3]">ROADMAP</li>
+          <li className="pb-6" onClick={onClick}>
+            TOKENOMIC
+          </li>
+          <li
+            className="py-6 border-y border-[#A3A3A3]"
+            onClick={onClickRoadmap}
+          >
+            ROADMAP
+          </li>
         </ul>
         <div className="flex justify-center items-center md:hidden">
-          <Button
-            className="mr-5 px-6 py-2 border-2 border-[#FFA943] rounded-2xl bg-[#111] min-w-[121px]"
-            style={{
-              boxShadow: `0px 4px 0px 0px #000`,
-            }}
-          >
-            <span className="text-white text-[16px] font-bold">Claim Now</span>
+          <Button className="pr-2" onClick={() => navigate(PATH_AIR_DROPS) }>
+            <img src={btnAirDropM} alt="" />
           </Button>
-          <Button
-            className="mr-5 px-6 py-2 border-2 border-[#000] rounded-2xl bg-[#FFA943] min-w-[121px]"
-            style={{ boxShadow: `-2px 4px 0px 0px #FFA943` }}
-          >
-          <span className="text-white text-[16px] font-bold">Connect Wallet</span>
+          <Button>
+            <img src={btnBuyNowM} alt="" />
           </Button>
         </div>
       </Container>
