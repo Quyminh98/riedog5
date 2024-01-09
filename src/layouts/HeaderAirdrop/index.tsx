@@ -5,28 +5,28 @@ import { MenuIcon } from "../../icons/MenuIcon";
 import { CloseIcon } from "../../icons/CloseIcon";
 import MenuMobile from "./MenuMobile";
 import { Link } from "react-router-dom";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+// import { useWallet } from "@solana/wallet-adapter-react";
+// import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 // import { Connection, PublicKey } from "@solana/web3.js";
-import YourWallet from "./YourWallet";
-import { shortenAddress } from "../../utils";
+// import YourWallet from "./YourWallet";
+// import { shortenAddress } from "../../utils";
 
 function HeaderAirdrop() {
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const { setVisible } = useWalletModal();
-  const [isShowYourWallet, setIsShowYourWallet] = useState<boolean>(false);
+  // const { setVisible } = useWalletModal();
+  // const [isShowYourWallet, setIsShowYourWallet] = useState<boolean>(false);
 
   // const [balance, setBalance] = useState<number>();
 
-  const { publicKey, connect, connected } = useWallet();
+  // const { publicKey, connect, connected } = useWallet();
 
   const handleConnect = () => {
-    if (connected) {
-      setIsShowYourWallet(true);
-    } else {
-      connect();
-      setVisible(true);
-    }
+    // if (connected) {
+    //   setIsShowYourWallet(true);
+    // } else {
+    //   connect();
+    //   setVisible(true);
+    // }
   };
 
   const handleOpenMenu = () => setShowMenu(true);
@@ -81,18 +81,19 @@ function HeaderAirdrop() {
             onClick={handleConnect}
           >
             <span className="text-white text-[20px] font-bold">
-              {connected && publicKey
+              {/* {connected && publicKey
                 ? shortenAddress(publicKey.toBase58())
-                : "Conect Wallet"}
+                : "Conect Wallet"} */}
+                Conect Wallet
             </span>
           </Button>
-          {publicKey && (
+          {/* {publicKey && (
             <YourWallet
               address={publicKey?.toBase58()}
               setIsShowYourWallet={setIsShowYourWallet}
               isShowYourWallet={isShowYourWallet}
             />
-          )}
+          )} */}
           <div className="block pl-3 lg:hidden lg:pl-0">
             {showMenu ? (
               <CloseIcon onClick={handleCloseMenu} />
