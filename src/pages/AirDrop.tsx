@@ -9,7 +9,7 @@ import "./styles.css";
 function AirDrop() {
   return (
     <main className="bg-[#FFF4E9] tokenAirdrop">
-      <Container className="pt-[62px] flex flex-col items-center">
+      <Container className="pt-[62px] py-[150px] flex flex-col items-center">
         <h3 className="text-center text-[#FFA943] text-[40px] italic font-bold title mb-12">
           $RIE Token Airdrop
         </h3>
