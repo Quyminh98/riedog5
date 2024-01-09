@@ -49,6 +49,8 @@ function HeaderAirdrop() {
     getBalance();
   }, [publicKey]);
 
+  console.log("balance",balance)
+
   return (
     <div className="border-b-4 border-[#FFA943]">
       <Container className="flex justify-between items-center py-5  px-5 md:px-0">

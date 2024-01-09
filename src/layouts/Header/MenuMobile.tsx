@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Container } from "../../components";
 import './style.css'
 import btnAirDropM from '../../assets/image/btnAirDropMobile.png'
