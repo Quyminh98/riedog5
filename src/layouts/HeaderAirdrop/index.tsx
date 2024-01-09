@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+
 import { Button, Container } from "../../components";
 import rieDogLogo from "../../assets/image/logo.svg";
 import { MenuIcon } from "../../icons/MenuIcon";
 import { CloseIcon } from "../../icons/CloseIcon";
 import MenuMobile from "./MenuMobile";
-import { Link } from "react-router-dom";
 // import { useWallet } from "@solana/wallet-adapter-react";
 // import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 // import { Connection, PublicKey } from "@solana/web3.js";
@@ -12,6 +13,7 @@ import { Link } from "react-router-dom";
 // import { shortenAddress } from "../../utils";
 
 function HeaderAirdrop() {
+  const navigator = useNavigate();
   const [showMenu, setShowMenu] = useState<boolean>(false);
   // const { setVisible } = useWalletModal();
   // const [isShowYourWallet, setIsShowYourWallet] = useState<boolean>(false);
@@ -51,6 +53,15 @@ function HeaderAirdrop() {
 
   // console.log("balance",balance)
 
+  const handleClickTokenomic = () => {
+    navigator("/?tokenomic");
+    handleCloseMenu();
+  };
+  const handleClickRoadmap = () => {
+    navigator("/?roadmap");
+    handleCloseMenu();
+  };
+
   return (
     <div className="border-b-4 border-[#FFA943]">
       <Container className="flex justify-between items-center py-5  px-5 md:px-0">
@@ -58,10 +69,18 @@ function HeaderAirdrop() {
           <img src={rieDogLogo} alt="logo" />
         </Link>
         <ul className="hidden lg:flex cursor-pointer">
-          <li className="pr-12 text-xl font-bold hover:text-[#FFA943]">
-            <a href="#tokenomic">TOKENOMIC</a>
+          <li
+            className="pr-12 text-xl font-bold hover:text-[#FFA943]"
+            onClick={handleClickTokenomic}
+          >
+            TOKENOMIC
           </li>
-          <li className="text-xl font-bold hover:text-[#FFA943]">ROADMAP</li>
+          <li
+            className="text-xl font-bold hover:text-[#FFA943]"
+            onClick={handleClickRoadmap}
+          >
+            ROADMAP
+          </li>
         </ul>
         <div className="flex items-center relative">
           <Button
@@ -84,7 +103,7 @@ function HeaderAirdrop() {
               {/* {connected && publicKey
                 ? shortenAddress(publicKey.toBase58())
                 : "Conect Wallet"} */}
-                Conect Wallet
+              Conect Wallet
             </span>
           </Button>
           {/* {publicKey && (
@@ -103,7 +122,12 @@ function HeaderAirdrop() {
           </div>
         </div>
       </Container>
-      {showMenu && <MenuMobile />}
+      {showMenu && (
+        <MenuMobile
+          onClick={handleClickTokenomic}
+          onClickRoadmap={handleClickRoadmap}
+        />
+      )}
     </div>
   );
 }

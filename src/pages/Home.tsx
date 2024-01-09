@@ -18,8 +18,32 @@ import roadMapTablet2 from "../assets/image/road-map-tablet2.png";
 import roadMapMobile from "../assets/image/road-map-mobile.png";
 
 import "./styles.css";
+import { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 
 function Home() {
+  const tokenomicRef = useRef(null);
+  const roadMapRef = useRef(null);
+  const { search } = useLocation();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(search);
+
+    if (searchParams.has("tokenomic") && tokenomicRef.current) {
+      tokenomicRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+
+    if (searchParams.has("roadmap") && roadMapRef.current) {
+      roadMapRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [search, tokenomicRef, roadMapRef]);
+
   return (
     <>
       <main className="bg-[#FFF4E9]">
@@ -91,7 +115,7 @@ function Home() {
           </p>
         </Container>
       </main>
-      <main className="bg-white py-12">
+      <main className="bg-white py-12" ref={tokenomicRef}>
         <Container className="px-5 md:px-0 flex flex-col justify-center items-center relative">
           <div className="hidden md:block absolute left-[-75px] xl:left-0 w-1/4">
             <img src={tokenLeft} alt="" />
@@ -122,7 +146,7 @@ function Home() {
           </Button>
         </Container>
       </main>
-      <main className="bg-[#FFF4E9] py-4 md:py-7 lg:py-12">
+      <main className="bg-[#FFF4E9] py-4 md:py-7 lg:py-12" ref={roadMapRef}>
         <Container className="flex flex-col items-center">
           <h3 className="pb-4 lg:pb-16 text-[28px] lg:text-[40px] text-[#FFA943] font-bold">
             ROADMAP

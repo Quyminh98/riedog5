@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate,Link  } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button, Container } from "../../components";
 import rieDogLogo from "../../assets/image/logo.svg";
 import { MenuIcon } from "../../icons/MenuIcon";
@@ -8,6 +8,7 @@ import MenuMobile from "./MenuMobile";
 import { PATH_AIR_DROPS } from "../../routes/paths";
 
 function Header() {
+  const navigator = useNavigate();
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
   const handleOpenMenu = () => setShowMenu(true);
@@ -15,17 +16,34 @@ function Header() {
   const handleCloseMenu = () => setShowMenu(false);
   const navigate = useNavigate();
 
+  const handleClickTokenomic = () => {
+    navigator("/?tokenomic");
+    handleCloseMenu();
+  };
+  const handleClickRoadmap = () => {
+    navigator("/?roadmap");
+    handleCloseMenu();
+  };
+
   return (
     <div className="border-b-4 border-[#FFA943]">
       <Container className="flex justify-between items-center py-5  px-5 md:px-0">
-        <Link to={'/'}>
+        <Link to={"/"}>
           <img src={rieDogLogo} alt="logo" />
         </Link>
         <ul className="hidden lg:flex cursor-pointer">
-          <li className="pr-12 text-xl font-bold hover:text-[#FFA943]">
-            <a href="#tokenomic">TOKENOMIC</a>
+          <li
+            className="pr-12 text-xl font-bold hover:text-[#FFA943]"
+            onClick={handleClickTokenomic}
+          >
+            TOKENOMIC
           </li>
-          <li className="text-xl font-bold hover:text-[#FFA943]">ROADMAP</li>
+          <li
+            className="text-xl font-bold hover:text-[#FFA943]"
+            onClick={handleClickRoadmap}
+          >
+            ROADMAP
+          </li>
         </ul>
         <div className="flex items-center">
           <Button
@@ -53,7 +71,12 @@ function Header() {
           </div>
         </div>
       </Container>
-      {showMenu && <MenuMobile />}
+      {showMenu && (
+        <MenuMobile
+          onClick={handleClickTokenomic}
+          onClickRoadmap={handleClickRoadmap}
+        />
+      )}
     </div>
   );
 }
