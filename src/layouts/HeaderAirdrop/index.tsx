@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Container } from "../../components";
 import rieDogLogo from "../../assets/image/logo.svg";
 import { MenuIcon } from "../../icons/MenuIcon";
@@ -7,7 +7,7 @@ import MenuMobile from "./MenuMobile";
 import { Link } from "react-router-dom";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import { Connection, PublicKey } from "@solana/web3.js";
+// import { Connection, PublicKey } from "@solana/web3.js";
 import YourWallet from "./YourWallet";
 import { shortenAddress } from "../../utils";
 
@@ -16,7 +16,7 @@ function HeaderAirdrop() {
   const { setVisible } = useWalletModal();
   const [isShowYourWallet, setIsShowYourWallet] = useState<boolean>(false);
 
-  const [balance, setBalance] = useState<number>();
+  // const [balance, setBalance] = useState<number>();
 
   const { publicKey, connect, connected } = useWallet();
 
@@ -32,24 +32,24 @@ function HeaderAirdrop() {
   const handleOpenMenu = () => setShowMenu(true);
   const handleCloseMenu = () => setShowMenu(false);
 
-  useEffect(() => {
-    const getBalance = async () => {
-      if (publicKey) {
-        const connection = new Connection(
-          "https://api.mainnet-beta.solana.com",
-          "confirmed"
-        );
-        const balance = await connection.getBalance(
-          new PublicKey(publicKey.toBase58())
-        );
-        setBalance(balance);
-      }
-    };
+  // useEffect(() => {
+  //   const getBalance = async () => {
+  //     if (publicKey) {
+  //       const connection = new Connection(
+  //         "https://api.mainnet-beta.solana.com",
+  //         "confirmed"
+  //       );
+  //       const balance = await connection.getBalance(
+  //         new PublicKey(publicKey.toBase58())
+  //       );
+  //       setBalance(balance);
+  //     }
+  //   };
 
-    getBalance();
-  }, [publicKey]);
+  //   getBalance();
+  // }, [publicKey]);
 
-  console.log("balance",balance)
+  // console.log("balance",balance)
 
   return (
     <div className="border-b-4 border-[#FFA943]">
