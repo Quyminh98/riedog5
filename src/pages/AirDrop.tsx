@@ -46,7 +46,7 @@ function AirDrop() {
                   <span className="text-lg font-bold">1,000,000 $RIE</span>
                 </p>
               </div>
-              <Progress progress="33.5" />
+              <Progress progress="33.5%" />
             </div>
           </div>
           <div className="flex justify-center items-center">

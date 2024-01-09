@@ -27,7 +27,7 @@ function Progress({ progress }: ProgressProps) {
   return (
     <div style={Parentdiv}>
       <div style={Childdiv}>
-        <span style={progresstext}>{progress}</span>
+        <span style={progresstext} />
       </div>
     </div>
   );
