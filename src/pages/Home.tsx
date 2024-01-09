@@ -22,8 +22,8 @@ import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 function Home() {
-  const tokenomicRef = useRef(null);
-  const roadMapRef = useRef(null);
+  const tokenomicRef = useRef<HTMLDivElement>(null);
+  const roadMapRef = useRef<HTMLDivElement>(null);
   const { search } = useLocation();
 
   useEffect(() => {
