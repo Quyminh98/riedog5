@@ -12,10 +12,10 @@ function Progress({ progress }: ProgressProps) {
 
   const Childdiv = {
     height: "100%",
-    width: `${progress}%`,
+    width: progress,
     backgroundColor: "#FFA943",
     borderRadius: 40,
-    textAlign: "right",
+    textAlign: "right" as const,  // Specify the correct type
   };
 
   const progresstext = {
@@ -27,7 +27,7 @@ function Progress({ progress }: ProgressProps) {
   return (
     <div style={Parentdiv}>
       <div style={Childdiv}>
-        <span style={progresstext} />
+        <span style={progresstext}>{progress}</span>
       </div>
     </div>
   );
