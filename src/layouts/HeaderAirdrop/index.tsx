@@ -1,57 +1,67 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
 import { Button, Container } from "../../components";
 import rieDogLogo from "../../assets/image/logo.svg";
 import { MenuIcon } from "../../icons/MenuIcon";
 import { CloseIcon } from "../../icons/CloseIcon";
 import MenuMobile from "./MenuMobile";
-// import { useWallet } from "@solana/wallet-adapter-react";
-// import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-// import { Connection, PublicKey } from "@solana/web3.js";
-// import YourWallet from "./YourWallet";
-// import { shortenAddress } from "../../utils";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+import * as web3 from "@solana/web3.js";
+import { GetProgramAccountsFilter } from "@solana/web3.js";
+import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 
 function HeaderAirdrop() {
   const navigator = useNavigate();
+
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  // const { setVisible } = useWalletModal();
-  // const [isShowYourWallet, setIsShowYourWallet] = useState<boolean>(false);
+  const { disconnect, publicKey } = useWallet();
 
-  // const [balance, setBalance] = useState<number>();
+  let connection = new web3.Connection(web3.clusterApiUrl("devnet"), "confirmed");
 
-  // const { publicKey, connect, connected } = useWallet();
+  async function getInfo() {
+    if (publicKey) {
+      const filters: GetProgramAccountsFilter[] = [
+        {
+          dataSize: 165,
+        },
+        {
+          memcmp: {
+            offset: 32,
+            bytes: publicKey.toString()
+          }
+        }
+      ]
+      const tokenAccounts = await connection.getParsedProgramAccounts(
+        TOKEN_PROGRAM_ID,
+        { filters }
+      )
+
+      tokenAccounts.forEach((account) => {
+        const parsedAccountInfo = account.account.data
+        // @ts-ignore
+        const mintAddress = parsedAccountInfo?.parsed?.info?.mint
+        console.log(mintAddress)
+        // @ts-ignore
+        const tokenBalance = parsedAccountInfo?.parsed?.info?.tokenAmount?.uiAmount
+        console.log(tokenBalance)
+      })
+    }
+  }
+
+  const { setVisible } = useWalletModal();
 
   const handleConnect = () => {
-    // if (connected) {
-    //   setIsShowYourWallet(true);
-    // } else {
-    //   connect();
-    //   setVisible(true);
-    // }
-  };
+    setVisible(true)
+  }
+  const handleDisconect = useCallback(() => {
+    disconnect().catch(() => {
+      // Silently catch because any errors are caught by the context `onError` handler
+    });
+  }, [disconnect]);
 
   const handleOpenMenu = () => setShowMenu(true);
   const handleCloseMenu = () => setShowMenu(false);
-
-  // useEffect(() => {
-  //   const getBalance = async () => {
-  //     if (publicKey) {
-  //       const connection = new Connection(
-  //         "https://api.mainnet-beta.solana.com",
-  //         "confirmed"
-  //       );
-  //       const balance = await connection.getBalance(
-  //         new PublicKey(publicKey.toBase58())
-  //       );
-  //       setBalance(balance);
-  //     }
-  //   };
-
-  //   getBalance();
-  // }, [publicKey]);
-
-  // console.log("balance",balance)
 
   const handleClickTokenomic = () => {
     navigator("/?tokenomic");
@@ -93,26 +103,29 @@ function HeaderAirdrop() {
               Claim Token
             </span>
           </Button>
-          <Button
+          {publicKey ? <Button
             className="hidden md:block border-2 border-[#000] px-4 py-3
            bg-[#FFA943] rounded-2xl min-w-[170px]"
             style={{ boxShadow: `-2px 4px 0px 0px #FFA943` }}
-            onClick={handleConnect}
+            onClick={handleDisconect}
           >
             <span className="text-white text-[20px] font-bold">
-              {/* {connected && publicKey
-                ? shortenAddress(publicKey.toBase58())
-                : "Conect Wallet"} */}
-              Conect Wallet
+              {/* {wallet?.adapter.icon && <img src={wallet.adapter.icon} alt={`${wallet.adapter.name} icon`}/>}  */}
+              {publicKey.toString().slice(0, 4)}...{publicKey.toString().slice(-4)}
             </span>
-          </Button>
-          {/* {publicKey && (
-            <YourWallet
-              address={publicKey?.toBase58()}
-              setIsShowYourWallet={setIsShowYourWallet}
-              isShowYourWallet={isShowYourWallet}
-            />
-          )} */}
+          </Button> :
+            <Button
+              className="hidden md:block border-2 border-[#000] px-4 py-3
+           bg-[#FFA943] rounded-2xl min-w-[170px]"
+              style={{ boxShadow: `-2px 4px 0px 0px #FFA943` }}
+              onClick={handleConnect}
+            >
+              <span className="text-white text-[20px] font-bold">
+                Connect Wallet
+              </span>
+            </Button>
+          }
+
           <div className="block pl-3 lg:hidden lg:pl-0">
             {showMenu ? (
               <CloseIcon onClick={handleCloseMenu} />

@@ -5,8 +5,12 @@ import btnTelegram from "../assets/image/btnTelegram.png";
 import btnX from "../assets/image/btnX.png";
 
 import "./styles.css";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 function AirDrop() {
+  const { publicKey } = useWallet();
+  console.log(publicKey?.toString())
+
   return (
     <main className="bg-[#FFF4E9] tokenAirdrop">
       <Container className="pt-[62px] py-[150px] flex flex-col items-center">
@@ -51,7 +55,22 @@ function AirDrop() {
           </div>
           <div className="flex justify-center items-center">
             <div className="flex items-center">
-              <p className="flex text-base items-center font-bold">
+              <p className="flex text-base items-center font-bold mb-4" >
+                <TickIcon className="mr-2 " /> You must have 0.5 SOL
+              </p>
+            </div>
+          </div><div className="flex justify-center items-center">
+            <div className="flex items-center">
+              <p className="flex text-base items-center font-bold mb-4">
+                <TickIcon className="mr-2" /> You must own QUY token
+
+              </p>
+
+            </div>
+          </div>
+          <div className="flex justify-center items-center">
+            <div className="flex items-center">
+              <p className="flex text-base items-center font-bold ">
                 <TickIcon className="mr-2" /> Eligible to claim:
                 <LogoIcon className="mx-2" /> 1000 $RIE
               </p>

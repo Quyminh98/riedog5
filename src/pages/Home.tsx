@@ -26,6 +26,7 @@ function Home() {
   const roadMapRef = useRef<HTMLDivElement>(null);
   const { search } = useLocation();
 
+
   useEffect(() => {
     const searchParams = new URLSearchParams(search);
 
