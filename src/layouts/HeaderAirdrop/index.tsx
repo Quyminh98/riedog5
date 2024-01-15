@@ -7,47 +7,12 @@ import { CloseIcon } from "../../icons/CloseIcon";
 import MenuMobile from "./MenuMobile";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
-import * as web3 from "@solana/web3.js";
-import { GetProgramAccountsFilter } from "@solana/web3.js";
-import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 
 function HeaderAirdrop() {
   const navigator = useNavigate();
 
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const { disconnect, publicKey } = useWallet();
-
-  let connection = new web3.Connection(web3.clusterApiUrl("devnet"), "confirmed");
-
-  async function getInfo() {
-    if (publicKey) {
-      const filters: GetProgramAccountsFilter[] = [
-        {
-          dataSize: 165,
-        },
-        {
-          memcmp: {
-            offset: 32,
-            bytes: publicKey.toString()
-          }
-        }
-      ]
-      const tokenAccounts = await connection.getParsedProgramAccounts(
-        TOKEN_PROGRAM_ID,
-        { filters }
-      )
-
-      tokenAccounts.forEach((account) => {
-        const parsedAccountInfo = account.account.data
-        // @ts-ignore
-        const mintAddress = parsedAccountInfo?.parsed?.info?.mint
-        console.log(mintAddress)
-        // @ts-ignore
-        const tokenBalance = parsedAccountInfo?.parsed?.info?.tokenAmount?.uiAmount
-        console.log(tokenBalance)
-      })
-    }
-  }
 
   const { setVisible } = useWalletModal();
 
