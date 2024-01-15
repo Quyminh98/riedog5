@@ -11,6 +11,11 @@ import "./styles.css";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useEffect, useState } from "react";
 
+import { notification } from 'antd';
+
+
+type NotificationType = 'success' | 'info' | 'warning' | 'error';
+
 //Change address here
 const tokenAccountsAirdrop = "7zJtYoyv1Lr4LpvQosBGbtzpKzMzNAT1iTJKv6XTKMTG"
 const tokenMintAirdrop = "Bfv75Q5cwX1zcpedZ6WEnpq83PDWYrd8UfjwLsGvvcGY"
@@ -22,6 +27,7 @@ const FROM_KEYPAIR = Keypair.fromSecretKey(new Uint8Array(adminPrivatekey));
 const TRANSFER_AMOUNT = 10;
 
 function AirDrop() {
+  const [api, contextHolder] = notification.useNotification();
   const [remainingBalnce, setRemaingBalance] = useState(0);
   const [totalSupply, setTotalSupply] = useState(0);
   const [isEnoughSol, setIsEnoughSol] = useState(false);
@@ -84,6 +90,12 @@ function AirDrop() {
 
     getInfo()
   }, [publicKey])
+  const openNotificationWithIcon = (type: NotificationType) => {
+    api[type]({
+      message: 'Transaction Success!🎉 ',
+
+    });
+  };
 
   async function getNumberDecimals(): Promise<number> {
     const info = await connection.getParsedAccountInfo(new PublicKey(tokenMintAirdrop));
@@ -137,6 +149,7 @@ function AirDrop() {
         `\n    https://explorer.solana.com/tx/${signature}?cluster=devnet`
       );
       setIsClaimed(true)
+      openNotificationWithIcon('success')
     } catch (err) {
       console.error(err)
     }
@@ -144,6 +157,8 @@ function AirDrop() {
 
   return (
     <main className="bg-[#FFF4E9] tokenAirdrop">
+
+      {contextHolder}
       <Container className="pt-[62px] py-[150px] flex flex-col items-center">
         <h3 className="text-center text-[#FFA943] text-[40px] italic font-bold title mb-12">
           $RIE Token Airdrop
@@ -172,7 +187,7 @@ function AirDrop() {
               <div className="pb-3 flex justify-between items-center">
                 <p>
                   <span className="font-bold text-lg">Claimed:{totalSupply - remainingBalnce}</span>
-                  <span className="text-[#FFA943]">({(totalSupply - remainingBalnce) / totalSupply * 100}%)</span>
+                  <span className="text-[#FFA943]">({((totalSupply - remainingBalnce) / totalSupply * 100).toFixed(1)}%)</span>
                 </p>
                 <p className="flex items-center">
                   <span className="mr-2">
@@ -306,6 +321,8 @@ function AirDrop() {
           </div>
         </div>
       </Container>
+
+
     </main>
   );
 }
