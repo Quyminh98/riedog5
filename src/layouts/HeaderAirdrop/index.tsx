@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button, Container } from "../../components";
 import rieDogLogo from "../../assets/image/logo.svg";
@@ -7,26 +7,65 @@ import { CloseIcon } from "../../icons/CloseIcon";
 import MenuMobile from "./MenuMobile";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+import YourWallet from "./YourWallet";
+import * as web3 from "@solana/web3.js";
+import BigNumber from "bignumber.js";
+import { TOKEN_MINT_AIRDROP } from "../../constants/constants";
+import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 
 function HeaderAirdrop() {
   const navigator = useNavigate();
 
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const { disconnect, publicKey } = useWallet();
+  const [isShowYourWallet, setIsShowYourWallet] = useState<boolean>(false);
+  const [solBalance, setSolBalance] = useState<string>('')
+  const [rieBalance, setRieBalance] = useState<string>('')
 
+  const { publicKey } = useWallet();
   const { setVisible } = useWalletModal();
+  let connection = new web3.Connection(web3.clusterApiUrl("devnet"), "confirmed");
+  useEffect(() => {
+    const getInfoWallet = async () => {
+      if (publicKey) {
+        const balanceSol = await connection.getBalance(publicKey)
+        setSolBalance(new BigNumber(balanceSol).dividedBy(new BigNumber(10).pow(9)).toString())
+        const filters: web3.GetProgramAccountsFilter[] = [
+          {
+            dataSize: 165,
+          },
+          {
+            memcmp: {
+              offset: 32,
+              bytes: publicKey.toString()
+            }
+          }
+        ]
+        const tokenAccounts = await connection.getParsedProgramAccounts(
+          TOKEN_PROGRAM_ID,
+          { filters }
+        )
+        const accountInfo = tokenAccounts.find((account) => {
+          const parsedAccountInfo = account.account.data;
+          // @ts-ignore
+          return parsedAccountInfo?.parsed?.info?.mint === TOKEN_MINT_AIRDROP
+        })
+        // @ts-ignore
+        setRieBalance(accountInfo?.account.data.parsed.info.tokenAmount.uiAmount)
+      }
+
+    }
+    getInfoWallet()
+  }, [publicKey])
+  console.log()
 
   const handleConnect = () => {
     setVisible(true)
   }
-  const handleDisconect = useCallback(() => {
-    disconnect().catch(() => {
-      // Silently catch because any errors are caught by the context `onError` handler
-    });
-  }, [disconnect]);
 
   const handleOpenMenu = () => setShowMenu(true);
   const handleCloseMenu = () => setShowMenu(false);
+
+  const handleShowYourWallet = () => setIsShowYourWallet(true)
 
   const handleClickTokenomic = () => {
     navigator("/?tokenomic");
@@ -69,15 +108,16 @@ function HeaderAirdrop() {
             </span>
           </Button>
           {publicKey ? <Button
-            className="hidden md:block border-2 border-[#000] px-4 py-3
+            className=" hidden md:block border-2 border-[#000] px-4 py-3
            bg-[#FFA943] rounded-2xl min-w-[170px]"
             style={{ boxShadow: `-2px 4px 0px 0px #FFA943` }}
-            onClick={handleDisconect}
+            onClick={handleShowYourWallet}
           >
             <span className="text-white text-[20px] font-bold">
               {/* {wallet?.adapter.icon && <img src={wallet.adapter.icon} alt={`${wallet.adapter.name} icon`}/>}  */}
               {publicKey.toString().slice(0, 4)}...{publicKey.toString().slice(-4)}
             </span>
+
           </Button> :
             <Button
               className="hidden md:block border-2 border-[#000] px-4 py-3
@@ -90,6 +130,15 @@ function HeaderAirdrop() {
               </span>
             </Button>
           }
+          {publicKey && (
+            <YourWallet
+              address={publicKey?.toString()}
+              solBalance={solBalance}
+              rieBalance={rieBalance}
+              setIsShowYourWallet={setIsShowYourWallet}
+              isShowYourWallet={isShowYourWallet}
+            ></YourWallet>
+          )}
 
           <div className="block pl-3 lg:hidden lg:pl-0">
             {showMenu ? (
@@ -99,6 +148,8 @@ function HeaderAirdrop() {
             )}
           </div>
         </div>
+
+
       </Container>
       {showMenu && (
         <MenuMobile

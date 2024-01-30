@@ -13,18 +13,10 @@ import { useEffect, useState } from "react";
 
 import { notification } from 'antd';
 
-
+import { TOKEN_ACCOUNT_AIRDROP, TOKEN_MINT_AIRDROP, TOKEN_MINT_NEEDED, ADMIN_ADDRESS, ADMIN_PRIVATE_KEY, TRANSFER_AMOUNT } from "../constants/constants";
 type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
-//Change address here
-const tokenAccountsAirdrop = "7zJtYoyv1Lr4LpvQosBGbtzpKzMzNAT1iTJKv6XTKMTG"
-const tokenMintAirdrop = "Bfv75Q5cwX1zcpedZ6WEnpq83PDWYrd8UfjwLsGvvcGY"
-
-const tokenMintNeeded = "AJAZtyMJ5FvvkZUdiH57P1KLKrBDSXFLnqq5SbBCrhAi"
-const adminAddress = '6EoNNYXiLSomsksHh6rBg4epqnNChriaRukfFtNNBLUW'
-const adminPrivatekey = [121, 92, 110, 198, 174, 105, 244, 183, 125, 116, 84, 237, 162, 11, 137, 137, 100, 178, 238, 3, 96, 166, 161, 118, 125, 75, 37, 189, 161, 227, 194, 193, 77, 211, 106, 5, 178, 212, 53, 252, 158, 42, 222, 235, 119, 234, 164, 221, 27, 75, 251, 67, 63, 88, 235, 49, 78, 122, 0, 250, 202, 131, 179, 167]
-const FROM_KEYPAIR = Keypair.fromSecretKey(new Uint8Array(adminPrivatekey));
-const TRANSFER_AMOUNT = 10;
+const FROM_KEYPAIR = Keypair.fromSecretKey(new Uint8Array(ADMIN_PRIVATE_KEY));
 
 function AirDrop() {
   const [api, contextHolder] = notification.useNotification();
@@ -42,8 +34,8 @@ function AirDrop() {
     async function getInfo() {
       setIsEnoughSol(false)
       setIsHaveToken(false)
-      const balanceTokenAccount = await connection.getTokenAccountBalance(new PublicKey(tokenAccountsAirdrop))
-      const getTotalSupply = await connection.getTokenSupply(new PublicKey(tokenMintAirdrop))
+      const balanceTokenAccount = await connection.getTokenAccountBalance(new PublicKey(TOKEN_ACCOUNT_AIRDROP))
+      const getTotalSupply = await connection.getTokenSupply(new PublicKey(TOKEN_MINT_AIRDROP))
       if (publicKey) {
         const filters: web3.GetProgramAccountsFilter[] = [
           {
@@ -63,7 +55,7 @@ function AirDrop() {
         const accountInfo = tokenAccounts.find((account) => {
           const parsedAccountInfo = account.account.data;
           // @ts-ignore
-          return parsedAccountInfo?.parsed?.info?.mint === tokenMintNeeded
+          return parsedAccountInfo?.parsed?.info?.mint === TOKEN_MINT_NEEDED
         })
         // @ts-ignore
         if (accountInfo?.account.data.parsed?.info.tokenAmount.uiAmount > 0) {
@@ -98,20 +90,20 @@ function AirDrop() {
   };
 
   async function getNumberDecimals(): Promise<number> {
-    const info = await connection.getParsedAccountInfo(new PublicKey(tokenMintAirdrop));
+    const info = await connection.getParsedAccountInfo(new PublicKey(TOKEN_MINT_AIRDROP));
     const result = (info.value?.data as ParsedAccountData).parsed.info.decimals as number;
     return result;
   }
 
   const handleClaim = async () => {
     try {
-      console.log(`Sending ${TRANSFER_AMOUNT} ${(tokenMintAirdrop)} from ${adminAddress} to ${(publicKey?.toString())}.`)
+      console.log(`Sending ${TRANSFER_AMOUNT} ${(TOKEN_MINT_AIRDROP)} from ${ADMIN_ADDRESS} to ${(publicKey?.toString())}.`)
       //Step 1
       console.log(`1 - Getting Source Token Account`);
       let sourceAccount = await getOrCreateAssociatedTokenAccount(
         connection,
         FROM_KEYPAIR,
-        new PublicKey(tokenMintAirdrop),
+        new PublicKey(TOKEN_MINT_AIRDROP),
         FROM_KEYPAIR.publicKey
       );
       console.log(`    Source Account: ${sourceAccount.address.toString()}`);
@@ -121,13 +113,13 @@ function AirDrop() {
       let destinationAccount = await getOrCreateAssociatedTokenAccount(
         connection,
         FROM_KEYPAIR,
-        new PublicKey(tokenMintAirdrop),
+        new PublicKey(TOKEN_MINT_AIRDROP),
         // @ts-ignore
         new PublicKey(publicKey)
       );
       console.log(`    Destination Account: ${destinationAccount.address.toString()}`);
       //Step 3
-      console.log(`3 - Fetching Number of Decimals for Mint: ${tokenMintAirdrop}`);
+      console.log(`3 - Fetching Number of Decimals for Mint: ${TOKEN_MINT_AIRDROP}`);
       const numberDecimals = await getNumberDecimals()
       console.log(`    Number of Decimals: ${numberDecimals}`);
       //Step 4
