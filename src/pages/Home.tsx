@@ -133,10 +133,28 @@ function Home() {
             </p>
             <p>
               Blockchain:
-              <span className="text-stroke">SOLANA (...)</span>
+              <span className="text-stroke">SOLANA</span>
             </p>
             <p>
               Ticker Token: <span className="text-stroke">$RIE</span>
+            </p>
+            <p>
+              Airdrop: <span className="text-stroke">40%</span>
+            </p>
+            <p>
+              Grant: <span className="text-stroke">25%
+              </span>
+            </p>
+            <p>
+              Team: <span className="text-stroke">3.5%</span>
+            </p>
+            <p>
+              LP: <span className="text-stroke">25.5%
+              </span>
+            </p>
+            <p>
+              CEX: <span className="text-stroke">6%
+              </span>
             </p>
           </div>
           <div className=" hidden md:block absolute top-0 xl:top-8 right-[-30px] xl:right-0 w-1/4">
