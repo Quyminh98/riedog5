@@ -168,9 +168,9 @@ function AirDrop() {
               Airdrop Is Live Now!
             </p>
             <p className="pt-4 text-sm lg:text-base">
-              A total of [amount] $RIE tokens have been claimed by RieDog
-              supporters, <br /> constituting [percentage]% of the total supply.
-              <br /> The unclaimed tokens, representing [percentage]% of the
+              A total of 3,500,000,000,000 $RIE tokens have been claimed by RieDog
+              supporters, <br /> constituting 35% of the total supply.
+              <br /> The unclaimed tokens, representing 35% of the
               total supply, have been securely burned.
             </p>
           </div>
@@ -303,14 +303,16 @@ function AirDrop() {
           >
             Join the RieDog community to hunt for Airdrops now!
           </p>
-          <div>
-            <Button className="mr-4">
+          <div className="flex">
+            <a className="mr-4" href="https://t.me/Riedog" target="_blank" rel="noopener noreferrer">
               <img src={btnTelegram} alt="" />
-            </Button>
-            <Button>
+            </a>
+
+            <a href="https://twitter.com/Riedogonsol" target="_blank" rel="noopener noreferrer">
               <img src={btnX} alt="" />
-            </Button>
+            </a>
           </div>
+
         </div>
       </Container>
 

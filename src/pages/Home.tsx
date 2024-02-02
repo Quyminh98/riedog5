@@ -61,13 +61,14 @@ function Home() {
                   <img src={btnDexscrener} alt="" />
                 </Button>
               </div>
-              <div className="pt-[25px] pb-[20px]">
-                <Button className="pr-5">
+              <div className="pt-[25px] pb-[20px] flex">
+
+                <a className="pr-5" href="https://t.me/Riedog" target="_blank" rel="noopener noreferrer">
                   <img src={telegramIcon} alt="telgram" />
-                </Button>
-                <Button>
+                </a>
+                <a href="https://twitter.com/Riedogonsol" target="_blank" rel="noopener noreferrer">
                   <img src={xIcon} alt="X" />
-                </Button>
+                </a>
               </div>
             </div>
             <div>
@@ -160,9 +161,16 @@ function Home() {
           <div className=" hidden md:block absolute top-0 xl:top-8 right-[-30px] xl:right-0 w-1/4">
             <img src={tokenRight} alt="" />
           </div>
-          <Button>
-            <img src={btnAddress} alt="" />
-          </Button>
+          {/* <Button> */}
+
+          <a className="bg-[#FFA943] rounded-2xl border-2 border-solid px-4 py-4 border-black" href="https://solscan.io/token/6BiCY8YwQSfDMbyUWMNz2odDYcDUdzx1fQtcYbbwskVi" target="_blank" rel="noopener noreferrer">
+            Address: 6BiCY8YwQSfDMbyUWMNz2odDYcDUdzx1fQtcYbbwskVi
+          </a>
+
+
+          {/* <img src={btnAddress} alt="" /> */}
+
+          {/* </Button> */}
         </Container>
       </main>
       <main className="bg-[#FFF4E9] py-4 md:py-7 lg:py-12" ref={roadMapRef}>
