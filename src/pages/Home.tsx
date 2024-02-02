@@ -1,5 +1,4 @@
 import { Button, Container } from "../components";
-import btnAddress from "../assets/image/btnAddress.png";
 import sologan from "../assets/image/sologan.png";
 import sologanMobile from "../assets/image/sologanMobile.png";
 import btnBuyToken from "../assets/image/btnBuyToken.png";
