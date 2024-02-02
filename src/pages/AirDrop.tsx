@@ -82,9 +82,10 @@ function AirDrop() {
 
     getInfo()
   }, [publicKey])
-  const openNotificationWithIcon = (type: NotificationType) => {
+  const openNotificationWithIcon = (type: NotificationType, signature: string) => {
     api[type]({
-      message: 'Transaction Success!🎉 ',
+      message: `Transaction Success!🎉 
+      https://explorer.solana.com/tx/${signature}?cluster=devnet`,
 
     });
   };
@@ -141,7 +142,7 @@ function AirDrop() {
         `\n    https://explorer.solana.com/tx/${signature}?cluster=devnet`
       );
       setIsClaimed(true)
-      openNotificationWithIcon('success')
+      openNotificationWithIcon('success', signature)
     } catch (err) {
       console.error(err)
     }
