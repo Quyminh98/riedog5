@@ -26,6 +26,7 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 import { useMemo } from "react";
 
 function App() {
+  window.Buffer = window.Buffer || require("buffer").Buffer;
   // const solNetwork = WalletAdapterNetwork.Mainnet;
   // const endpoint = clusterApiUrl(solNetwork);
   // const wallets = [
